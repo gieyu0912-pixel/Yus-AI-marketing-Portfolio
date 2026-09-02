@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gieyu0912-pixel.github.io/Yus-AI-marketing-Portfolio/sitemap.xml
