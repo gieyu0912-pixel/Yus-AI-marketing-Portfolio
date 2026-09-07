@@ -1,0 +1,69 @@
+backend:
+  name: github
+  repo: gieyu0912-pixel/Yus-AI-marketing-Portfolio
+  branch: main
+  use_graphql: true
+
+publish_mode: editorial_workflow
+
+media_folder: "assets/images/uploads"
+public_folder: "/assets/images/uploads"
+
+site_url: "https://magenta-lokum-24d276.netlify.app/"
+display_url: "https://magenta-lokum-24d276.netlify.app/"
+
+collections:
+
+  - name: site_settings
+    label: "網站設定"
+    files:
+      - name: site
+        label: "余見 AI 品牌設定"
+        file: "content/site.yml"
+        fields:
+          - {label: "品牌名稱", name: "brand", widget: "string"}
+          - {label: "品牌主張", name: "tagline", widget: "string"}
+          - {label: "品牌口號", name: "slogan", widget: "string"}
+          - {label: "服務定位", name: "positioning", widget: "string"}
+          - {label: "SEO Title", name: "seo_title", widget: "string"}
+          - {label: "Meta Description", name: "meta_description", widget: "text"}
+          - {label: "GA4 ID", name: "ga_id", widget: "string"}
+          - {label: "YouTube", name: "youtube", widget: "string"}
+          - {label: "Email", name: "email", widget: "string"}
+
+  - name: homepage
+    label: "首頁"
+    files:
+      - name: homepage
+        label: "首頁內容"
+        file: "content/homepage.yml"
+        fields:
+          - {label: "Eyebrow", name: "eyebrow", widget: "string"}
+          - {label: "主標題", name: "title", widget: "string"}
+          - {label: "副標題", name: "subtitle", widget: "string"}
+          - {label: "介紹", name: "description", widget: "text"}
+          - {label: "主要 CTA", name: "primary_cta", widget: "string"}
+          - {label: "主要 CTA 連結", name: "primary_url", widget: "string"}
+          - {label: "次要 CTA", name: "secondary_cta", widget: "string"}
+          - {label: "次要 CTA 連結", name: "secondary_url", widget: "string"}
+
+  - name: eight_cats
+    label: "八喵元宇宙"
+    files:
+      - name: cats
+        label: "八喵角色"
+        file: "content/eight-cats.yml"
+        fields:
+          - label: "角色"
+            name: "cats"
+            widget: "list"
+            fields:
+              - {label: "名稱", name: "name", widget: "string"}
+              - label: "32 格動畫"
+                name: "frames"
+                widget: "list"
+                required: false
+                field:
+                  label: "圖片"
+                  name: "image"
+                  widget: "image"
