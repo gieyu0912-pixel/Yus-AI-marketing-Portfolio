@@ -1,0 +1,185 @@
+<!-- 余見 AI｜Decap CMS 首頁資料串接 -->
+<script id="yujian-cms-homepage">
+(async function () {
+  const paths = [
+    "./content/homepage.yml",
+    "/content/homepage.yml"
+  ];
+
+  async function fetchText(path) {
+    const res = await fetch(path, { cache: "no-store" });
+
+    if (!res.ok) {
+      throw new Error("HTTP " + res.status);
+    }
+
+    return await res.text();
+  }
+
+  function parseSimpleYaml(text) {
+    const data = {};
+
+    text.split(/\r?\n/).forEach(line => {
+      const m = line.match(/^([A-Za-z0-9_]+):\s*(.*)$/);
+
+      if (!m) return;
+
+      let value = m[2].trim();
+
+      if (
+        (value.startsWith('"') && value.endsWith('"')) ||
+        (value.startsWith("'") && value.endsWith("'"))
+      ) {
+        value = value.slice(1, -1);
+      }
+
+      data[m[1]] = value;
+    });
+
+    return data;
+  }
+
+  async function loadYaml(pathList) {
+    let lastError;
+
+    for (const path of pathList) {
+      try {
+        return parseSimpleYaml(
+          await fetchText(path)
+        );
+      } catch (e) {
+        lastError = e;
+      }
+    }
+
+    throw lastError || new Error("homepage.yml not found");
+  }
+
+  try {
+
+    const home = await loadYaml(paths);
+
+    /*
+     * 找到首頁 Hero 區塊
+     */
+
+    const eyebrow =
+      document.querySelector(".hero .eyebrow");
+
+    const title =
+      document.querySelector(".hero .hero-brand-line");
+
+    const subtitle =
+      document.querySelector(".hero .hero-line");
+
+    const support =
+      document.querySelector(".hero .hero-support");
+
+    const primary =
+      document.querySelector(".hero .cta-primary");
+
+    const secondary =
+      document.querySelector(".hero .cta-secondary");
+
+
+    /*
+     * EYEBROW
+     */
+
+    if (eyebrow && home.eyebrow) {
+      eyebrow.textContent = home.eyebrow;
+    }
+
+
+    /*
+     * 主標題
+     */
+
+    if (title && home.title) {
+
+      title.innerHTML =
+        home.title.replace(
+          /(\s*)(AI)(\s*)$/i,
+          '$1<em>$2</em>$3'
+        );
+
+    }
+
+
+    /*
+     * 副標題
+     */
+
+    if (subtitle && home.subtitle) {
+      subtitle.textContent =
+        home.subtitle;
+    }
+
+
+    /*
+     * 首頁介紹文字
+     */
+
+    if (support && home.description) {
+      support.textContent =
+        home.description;
+    }
+
+
+    /*
+     * 主要 CTA
+     */
+
+    if (primary) {
+
+      if (home.primary_cta) {
+        primary.textContent =
+          home.primary_cta;
+      }
+
+      if (home.primary_url) {
+        primary.href =
+          home.primary_url;
+      }
+
+    }
+
+
+    /*
+     * 次要 CTA
+     */
+
+    if (secondary) {
+
+      if (home.secondary_cta) {
+        secondary.textContent =
+          home.secondary_cta;
+      }
+
+      if (home.secondary_url) {
+        secondary.href =
+          home.secondary_url;
+      }
+
+    }
+
+
+    /*
+     * CMS 成功載入標記
+     */
+
+    document.documentElement.dataset.cmsHomepage =
+      "loaded";
+
+
+  } catch (error) {
+
+    console.warn(
+      "余見 AI CMS：首頁資料載入失敗，保留原始首頁內容。",
+      error
+    );
+
+  }
+
+})();
+</script>
