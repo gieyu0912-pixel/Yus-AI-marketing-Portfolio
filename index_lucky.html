@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CREAURA AI｜創耀 AI｜今日運勢</title>
+<meta name="description" content="CREAURA AI 今日運勢互動抽籤模組">
+<style>
+:root{--gold:#c9a24a;--dark:#171717;--cream:#faf7ef;--paper:#fffdf7;--line:#e7dfcf;--muted:#817b70}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 50% 0%,rgba(201,162,74,.13),transparent 35%),var(--cream);font-family:system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif;color:#292724}
+.wrap{width:min(680px,calc(100% - 28px));margin:40px auto}
+.brand{text-align:center;margin-bottom:22px}.name{font-size:13px;font-weight:800;letter-spacing:.2em;color:#94701f}.title{font-size:32px;font-weight:900;letter-spacing:.08em;margin:5px 0}.sub{font-size:13px;color:var(--muted)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:28px;padding:25px;box-shadow:0 12px 35px rgba(50,40,20,.08)}
+.paper{text-align:center;border:2px solid var(--gold);border-radius:20px;padding:28px 20px;background:linear-gradient(145deg,#fffef9,#f3ecdc)}
+.seal{width:58px;height:58px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;margin:0 auto 12px;color:#94701f;font-size:25px;font-weight:900}
+.grade{min-height:62px;color:#94701f;font-size:46px;font-weight:900;letter-spacing:.16em}.message{max-width:470px;margin:8px auto 0;font-size:15px;line-height:1.9}.date{margin-top:14px;color:#888;font-size:12px}
+button{width:100%;min-height:52px;margin-top:18px;border:0;border-radius:999px;background:var(--dark);color:#fff;font-size:16px;font-weight:800;letter-spacing:.06em;cursor:pointer}
+button:disabled{opacity:.65;cursor:wait}button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}.stat{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fff}.label{font-size:12px;color:var(--muted)}.value{margin-top:5px;font-size:15px;font-weight:800;line-height:1.5}
+.advice{margin-top:14px;padding:16px;border-radius:15px;background:#f7f0df;font-size:14px;line-height:1.8}.advice strong{display:block;margin-bottom:4px;color:#94701f}.note{text-align:center;margin-top:15px;color:#999;font-size:11px;line-height:1.6}
+@media(max-width:480px){.wrap{width:calc(100% - 20px);margin:22px auto}.card{padding:15px}.title{font-size:27px}.grade{font-size:38px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="brand">
+<div class="name">CREAURA AI｜創耀 AI</div>
+<div class="title">今日運勢</div>
+<div class="sub">創意讓品牌發光，AI讓商業成長。</div>
+</header>
+<section class="card">
+<div class="paper" aria-live="polite">
+<div class="seal">運</div>
+<div id="grade" class="grade">？</div>
+<div id="message" class="message">準備好了嗎？抽一張今日運勢，看看今天的幸運提示。</div>
+<div id="date" class="date"></div>
+</div>
+<button id="draw" type="button">✦ 抽今日運勢</button>
+<section class="grid" aria-label="運勢詳細資訊">
+<div class="stat"><div class="label">💰 財運</div><div id="money" class="value">—</div></div>
+<div class="stat"><div class="label">💼 事業</div><div id="career" class="value">—</div></div>
+<div class="stat"><div class="label">💕 愛情</div><div id="love" class="value">—</div></div>
+<div class="stat"><div class="label">🌿 健康</div><div id="health" class="value">—</div></div>
+<div class="stat"><div class="label">🎨 幸運色</div><div id="color" class="value">—</div></div>
+<div class="stat"><div class="label">🔢 幸運數字</div><div id="number" class="value">—</div></div>
+</section>
+<div class="advice"><strong>✦ 今日建議</strong><span id="advice">先抽一張籤，看看今天適合把力氣放在哪裡。</span></div>
+<div class="note">※ 本模組為娛樂性互動內容，運勢結果僅供生活參考。</div>
+</section>
+</main>
+<script>
+(function(){
+"use strict";
+const fortunes=[
+{g:"大吉",m:"今日氣勢旺盛，適合主動出擊，把想法化成行動。",money:"財運上升，適合穩健把握機會",career:"工作推進順利，容易獲得肯定",love:"互動升溫，適合主動表達心意",health:"精神不錯，記得維持規律作息",color:"金色",number:"8",a:"今天適合做一件你一直想完成的重要事情。"},
+{g:"中吉",m:"穩中有升的一天，耐心會讓好事逐漸靠近。",money:"正財穩定，避免衝動消費",career:"適合整理計畫、推進既有工作",love:"多聽對方想法，關係更順",health:"注意休息與飲水",color:"深藍",number:"6",a:"先完成最重要的一件事，再處理其他雜務。"},
+{g:"小吉",m:"小小好運正在累積，保持節奏就能看見成果。",money:"有小收穫，適合精打細算",career:"適合學習新工具或嘗試新方法",love:"輕鬆互動比刻意安排更有效",health:"適合散步、伸展與放鬆",color:"橘色",number:"3",a:"不要小看今天的一個小決定，它可能成為後續的起點。"},
+{g:"吉",m:"平穩順心的一天，按照自己的節奏前進即可。",money:"收支平衡，適合規劃預算",career:"溝通順暢，合作容易取得共識",love:"真誠交流能增加彼此信任",health:"維持平常作息即可",color:"米白",number:"5",a:"今天適合把複雜的事情簡單化。"},
+{g:"末吉",m:"好運尚在醞釀，慢一點反而更容易避開不必要的失誤。",money:"宜守不宜攻，避免高風險決定",career:"先確認細節，再快速執行",love:"避免因一時情緒產生誤會",health:"留意疲勞與睡眠品質",color:"墨綠",number:"2",a:"今天的關鍵字是「確認」。多看一次細節，少一次返工。"}
+];
+const $=id=>document.getElementById(id);
+const d=new Date();
+$("date").textContent=d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日";
+function show(x){$("grade").textContent=x.g;$("message").textContent=x.m;$("money").textContent=x.money;$("career").textContent=x.career;$("love").textContent=x.love;$("health").textContent=x.health;$("color").textContent=x.color;$("number").textContent=x.number;$("advice").textContent=x.a}
+$("draw").addEventListener("click",function(){
+const b=this;b.disabled=true;b.textContent="✦ 正在抽籤…";let n=0;
+const t=setInterval(function(){
+$("grade").textContent=fortunes[Math.floor(Math.random()*fortunes.length)].g;
+n++;
+if(n>=10){clearInterval(t);show(fortunes[Math.floor(Math.random()*fortunes.length)]);b.disabled=false;b.textContent="✦ 再抽一次"}
+},90);
+});
+})();
+</script>
+</body>
+</html>
