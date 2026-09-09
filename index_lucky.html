@@ -17,7 +17,25 @@ body{margin:0;background:radial-gradient(circle at 50% 0%,rgba(201,162,74,.13),t
 .grade{min-height:62px;color:#94701f;font-size:46px;font-weight:900;letter-spacing:.16em}.message{max-width:470px;margin:8px auto 0;font-size:15px;line-height:1.9}.date{margin-top:14px;color:#888;font-size:12px}
 button{width:100%;min-height:52px;margin-top:18px;border:0;border-radius:999px;background:var(--dark);color:#fff;font-size:16px;font-weight:800;letter-spacing:.06em;cursor:pointer}
 button:disabled{opacity:.65;cursor:wait}button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}.stat{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fff}.label{font-size:12px;color:var(--muted)}.value{margin-top:5px;font-size:15px;font-weight:800;line-height:1.5}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}
+.eight-cats{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.cat-stat{position:relative;min-height:122px;padding:13px 12px 12px 82px!important;overflow:hidden;border:1px solid var(--gold)!important;background:linear-gradient(145deg,#fff,#faf5e9)!important}
+.cat-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:58px;height:58px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:flex-end;justify-content:center;padding-bottom:7px;box-shadow:0 4px 12px rgba(50,40,20,.12)}
+.cat-icon:before,.cat-icon:after{content:"";position:absolute;top:-6px;width:20px;height:20px;transform:rotate(45deg);border:2px solid var(--gold);z-index:0}
+.cat-icon:before{left:4px}.cat-icon:after{right:4px}
+.cat-icon span{position:relative;z-index:2;font-size:9px;font-weight:900;letter-spacing:.02em;background:rgba(255,255,255,.78);border-radius:8px;padding:2px 4px}
+.cat-orange{--cat:#e99038}.cat-calico{--cat:#e5b36c}.cat-snow{--cat:#e8e7e2}.cat-tabby{--cat:#a9825c}.cat-black{--cat:#343434}.cat-lilac{--cat:#c6b5c9}.cat-gray{--cat:#777b80}.cat-tuxedo{--cat:#252525}
+.cat-icon{background:radial-gradient(circle at 35% 30%,#fff8 0 6%,transparent 7%),var(--cat)}
+.cat-icon span{color:#292724}
+.cat-stat .label{font-weight:800;color:#94701f}
+.cat-stat .value{font-size:13px}
+@media(max-width:480px){
+  .eight-cats{grid-template-columns:1fr 1fr;gap:8px}
+  .cat-stat{min-height:116px;padding-left:72px!important}
+  .cat-icon{left:9px;width:51px;height:51px}
+  .cat-icon:before,.cat-icon:after{width:17px;height:17px}
+}
+.stat{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fff}.label{font-size:12px;color:var(--muted)}.value{margin-top:5px;font-size:15px;font-weight:800;line-height:1.5}
 .advice{margin-top:14px;padding:16px;border-radius:15px;background:#f7f0df;font-size:14px;line-height:1.8}.advice strong{display:block;margin-bottom:4px;color:#94701f}.note{text-align:center;margin-top:15px;color:#999;font-size:11px;line-height:1.6}
 @media(max-width:480px){.wrap{width:calc(100% - 20px);margin:22px auto}.card{padding:15px}.title{font-size:27px}.grade{font-size:38px}}
 </style>
@@ -37,13 +55,15 @@ button:disabled{opacity:.65;cursor:wait}button:focus-visible{outline:3px solid v
 <div id="date" class="date"></div>
 </div>
 <button id="draw" type="button">✦ 抽今日運勢</button>
-<section class="grid" aria-label="運勢詳細資訊">
-<div class="stat"><div class="label">💰 財運</div><div id="money" class="value">—</div></div>
-<div class="stat"><div class="label">💼 事業</div><div id="career" class="value">—</div></div>
-<div class="stat"><div class="label">💕 愛情</div><div id="love" class="value">—</div></div>
-<div class="stat"><div class="label">🌿 健康</div><div id="health" class="value">—</div></div>
-<div class="stat"><div class="label">🎨 幸運色</div><div id="color" class="value">—</div></div>
-<div class="stat"><div class="label">🔢 幸運數字</div><div id="number" class="value">—</div></div>
+<section class="grid eight-cats" aria-label="八喵今日運勢詳細資訊">
+<div class="stat cat-stat cat-orange"><div class="cat-icon" aria-hidden="true"><span>大橘</span></div><div class="label">運</div><div id="gradeBox" class="value">—</div></div>
+<div class="stat cat-stat cat-calico"><div class="cat-icon" aria-hidden="true"><span>花肥</span></div><div class="label">財運</div><div id="money" class="value">—</div></div>
+<div class="stat cat-stat cat-snow"><div class="cat-icon" aria-hidden="true"><span>雪泥</span></div><div class="label">事業</div><div id="career" class="value">—</div></div>
+<div class="stat cat-stat cat-tabby"><div class="cat-icon" aria-hidden="true"><span>胖虎</span></div><div class="label">愛情</div><div id="love" class="value">—</div></div>
+<div class="stat cat-stat cat-black"><div class="cat-icon" aria-hidden="true"><span>布拉克</span></div><div class="label">健康</div><div id="health" class="value">—</div></div>
+<div class="stat cat-stat cat-lilac"><div class="cat-icon" aria-hidden="true"><span>蝴蝶蘭</span></div><div class="label">幸運色</div><div id="color" class="value">—</div></div>
+<div class="stat cat-stat cat-gray"><div class="cat-icon" aria-hidden="true"><span>吉米</span></div><div class="label">幸運數字</div><div id="number" class="value">—</div></div>
+<div class="stat cat-stat cat-tuxedo"><div class="cat-icon" aria-hidden="true"><span>黑嚕嚕</span></div><div class="label">今日建議</div><div id="adviceBox" class="value">—</div></div>
 </section>
 <div class="advice"><strong>✦ 今日建議</strong><span id="advice">先抽一張籤，看看今天適合把力氣放在哪裡。</span></div>
 <div class="note">※ 本模組為娛樂性互動內容，運勢結果僅供生活參考。</div>
@@ -62,7 +82,7 @@ const fortunes=[
 const $=id=>document.getElementById(id);
 const d=new Date();
 $("date").textContent=d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日";
-function show(x){$("grade").textContent=x.g;$("message").textContent=x.m;$("money").textContent=x.money;$("career").textContent=x.career;$("love").textContent=x.love;$("health").textContent=x.health;$("color").textContent=x.color;$("number").textContent=x.number;$("advice").textContent=x.a}
+function show(x){$("grade").textContent=x.g;$("message").textContent=x.m;$("gradeBox").textContent=x.g;$("money").textContent=x.money;$("career").textContent=x.career;$("love").textContent=x.love;$("health").textContent=x.health;$("color").textContent=x.color;$("number").textContent=x.number;$("adviceBox").textContent=x.a;$("advice").textContent=x.a}
 $("draw").addEventListener("click",function(){
 const b=this;b.disabled=true;b.textContent="✦ 正在抽籤…";let n=0;
 const t=setInterval(function(){
