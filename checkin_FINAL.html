@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>櫃檯報到 - QUEEN'S BEAUTY</title>
+<style>
+body{font-family:-apple-system,"Noto Sans TC",sans-serif;background:#f6f0e6;padding:20px;text-align:center}
+.card{background:#fffdf9;border:1px solid #ead9b4;border-radius:18px;padding:24px;max-width:420px;margin:40px auto}
+input{width:100%;padding:12px;border:1px solid #e0d0b0;border-radius:12px;margin:8px 0}
+.btn{width:100%;border:0;border-radius:999px;padding:14px;background:#3b2d22;color:#f6efdf;font-weight:700;margin-top:12px}
+.ok{color:#146c2e;background:#e9fbe9;padding:10px;border-radius:10px;margin-top:12px}
+</style>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+<div class="card">
+<h2>掃碼報到</h2>
+<p id="status" style="color:#7a6c5d;font-size:13px">正在取得 LINE 資料...</p>
+<div id="form" style="display:none">
+  <input id="name" placeholder="姓名">
+  <input id="phone" placeholder="手機 09xxxxxxxx" inputmode="tel">
+  <button class="btn" id="btnBind">確認報到並綁定</button>
+</div>
+<div id="done" style="display:none"></div>
+</div>
+<script>
+const LIFF_ID = "2000000000-xxxxxxxx"; // 換成你的
+const SUPABASE_URL = "https://ivvprzlpvcvgegauiwcif.supabase.co";
+const SUPABASE_KEY = "sb_publishable_gfnr2Re5WmSB7IGvpIzHZw_TaCvV1nG";
+
+let profile = null;
+async function main(){
+  await liff.init({liffId: LIFF_ID});
+  if(!liff.isLoggedIn()){ liff.login(); return; }
+  profile = await liff.getProfile();
+  document.getElementById('status').innerHTML = "👋 Hi, "+profile.displayName+"<br>請填寫資料完成報到";
+  document.getElementById('form').style.display = "block";
+}
+document.getElementById('btnBind').onclick = async () => {
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  if(!name || !phone){ alert("請填姓名手機"); return; }
+  // 存到 Supabase members
+  await fetch(SUPABASE_URL+"/rest/v1/members",{
+    method:"POST",
+    headers:{apikey:SUPABASE_KEY, Authorization:"Bearer "+SUPABASE_KEY, "Content-Type":"application/json", Prefer:"resolution=merge-duplicates"},
+    body: JSON.stringify({line_user_id: profile.userId, display_name: profile.displayName, name, phone, last_checkin_at: new Date().toISOString()})
+  });
+  document.getElementById('form').style.display="none";
+  document.getElementById('done').style.display="block";
+  document.getElementById('done').innerHTML = "<div class='ok'>✅ 報到成功<br>已綁定 "+name+" / "+phone+"<br>請回櫃檯</div>";
+  // 同時讓櫃檯網頁能抓到，存在這支手機也存一份給美容師後台用
+  localStorage.setItem('qb_current_line_user_id', profile.userId);
+  localStorage.setItem('qb_current_name', name);
+  setTimeout(()=> liff.closeWindow(), 1500);
+};
+main();
+</script>
+</body>
+</html>
