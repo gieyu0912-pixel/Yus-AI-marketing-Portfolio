@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>QUEEN'S BEAUTY</title>
+<style>
+:root{
+  --cream:#f6f0e6;--gold:#c4a056;--gold2:#9a7a38;--brown:#3b2d22;--ink:#2a221b;
+  --muted:#7a6c5d;--line:#06c755;--card:#fffdf9;--ok:#2f7d5b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:var(--cream);color:var(--ink);font-family:-apple-system,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;line-height:1.65}
+button,input,select{font:inherit}
+.wrap{width:min(720px,calc(100% - 24px));margin:0 auto}
+.top{position:sticky;top:0;z-index:20;background:rgba(246,240,230,.94);backdrop-filter:blur(10px);border-bottom:1px solid rgba(196,160,86,.28)}
+.top-in{display:flex;align-items:center;justify-content:space-between;padding:10px 0;gap:8px}
+.brand{display:flex;align-items:center;gap:8px}
+.crown{width:36px;height:36px;border-radius:50%;background:linear-gradient(145deg,#f0deae,#c4a056);display:grid;place-items:center;font-size:16px}
+.brand b{display:block;letter-spacing:.12em;font-size:14px}
+.brand s{display:block;text-decoration:none;font-size:10px;letter-spacing:.2em;color:var(--gold2)}
