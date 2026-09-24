@@ -537,6 +537,17 @@ if (S.analysis) paintResult();
 if (S.name && $("cname")) $("cname").value = S.name;
 if (S.phone && $("cphone")) $("cphone").value = S.phone;
 </script>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script>
+liff.init({ liffId: "2011717856-sZ4PFKxl" }).then(function () {
+  if (!liff.isLoggedIn()) { liff.login(); return; }
+  return liff.getProfile();
+}).then(function (p) {
+  if (!p) return;
+  localStorage.setItem("qb_current_line_user_id", p.userId);
+  localStorage.setItem("qb_current_name", p.displayName);
+}).catch(function (e) { console.log(e); });
+</script>
 </body>
 </html>
 
