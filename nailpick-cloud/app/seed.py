@@ -1,0 +1,206 @@
+from .auth import hash_password
+from .models import Artist, Service, Work
+
+SEED = [
+    {
+        "email": "yuan@nailpick.tw",
+        "password": "1234",
+        "name": "林羽安",
+        "studio": "羽安指間工作室",
+        "city": "台中市",
+        "district": "西區",
+        "years": 6,
+        "rating": 4.9,
+        "reviews": 328,
+        "bio": "擅長韓系清透感與細緻法式。作品強調留白與光澤，適合日常通勤與正式場合。提供一對一諮詢，依手型調整長度與弧度。",
+        "styles": ["韓系", "法式", "貓眼"],
+        "avatar": "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=400&fit=crop",
+        "cover": "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=900&h=700&fit=crop",
+        "off_days": [1],
+        "slots": ["10:00", "11:30", "13:30", "15:00", "16:30", "18:00"],
+        "services": [
+            ("單色凝膠（手）", 90, 980),
+            ("法式 / 微笑線", 110, 1280),
+            ("貓眼 / 鏡面", 100, 1380),
+            ("客製手繪設計", 150, 1680),
+        ],
+        "works": [
+            "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=800",
+            "https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=800",
+            "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=800",
+            "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=800",
+        ],
+    },
+    {
+        "email": "han@nailpick.tw",
+        "password": "1234",
+        "name": "陳詩涵",
+        "studio": "涵光美甲",
+        "city": "台北市",
+        "district": "大安區",
+        "years": 8,
+        "rating": 4.8,
+        "reviews": 512,
+        "bio": "日系手繪與新娘款專長。線條乾淨、配色克制，常與禮服與妝容一起規劃。工作室採預約制，提供茶點與安靜空間。",
+        "styles": ["日系", "手繪", "新娘"],
+        "avatar": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop",
+        "cover": "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=900&h=700&fit=crop",
+        "off_days": [0],
+        "slots": ["11:00", "13:00", "15:00", "17:00", "19:00"],
+        "services": [
+            ("日系單色", 90, 1200),
+            ("手繪小花 / 線條", 140, 1800),
+            ("新娘全套（手+足）", 210, 3200),
+        ],
+        "works": [
+            "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=800",
+            "https://images.unsplash.com/photo-1607779097043-428a9d678186?w=800",
+            "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=800",
+            "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800",
+        ],
+    },
+    {
+        "email": "ching@nailpick.tw",
+        "password": "1234",
+        "name": "吳子晴",
+        "studio": "晴空甲室",
+        "city": "台中市",
+        "district": "北屯區",
+        "years": 4,
+        "rating": 4.7,
+        "reviews": 196,
+        "bio": "喜歡大膽色塊與立體元素。延長甲型穩定，適合想嘗試存在感款式的客人。可依預算調整鑽量與工時。",
+        "styles": ["美式", "延長", "3D"],
+        "avatar": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop",
+        "cover": "https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=900&h=700&fit=crop",
+        "off_days": [2],
+        "slots": ["10:30", "13:00", "15:30", "18:00"],
+        "services": [
+            ("單色光療", 80, 880),
+            ("延長塑型", 150, 1680),
+            ("3D 立體造型", 180, 2200),
+        ],
+        "works": [
+            "https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=800",
+            "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=800",
+            "https://images.unsplash.com/photo-1607779097043-428a9d678186?w=800",
+            "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800",
+        ],
+    },
+    {
+        "email": "muen@nailpick.tw",
+        "password": "1234",
+        "name": "黃沐恩",
+        "studio": "沐光 Nail Atelier",
+        "city": "新竹市",
+        "district": "東區",
+        "years": 5,
+        "rating": 4.9,
+        "reviews": 241,
+        "bio": "竹科與竹北客人居多，主打低飽和、耐看的職場款。強調甲面健康與卸甲不傷甲床，回客率高。",
+        "styles": ["韓系", "奶茶色", "職場"],
+        "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop",
+        "cover": "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=900&h=700&fit=crop",
+        "off_days": [3],
+        "slots": ["10:00", "12:00", "14:30", "16:30", "19:00"],
+        "services": [
+            ("奶茶單色", 90, 1080),
+            ("微設計（兩指）", 110, 1380),
+            ("他店卸甲 + 重做", 120, 1280),
+        ],
+        "works": [
+            "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=800",
+            "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=800",
+            "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=800",
+            "https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=800",
+        ],
+    },
+    {
+        "email": "rina@nailpick.tw",
+        "password": "1234",
+        "name": "周里奈",
+        "studio": "Rina Nail",
+        "city": "高雄市",
+        "district": "前鎮區",
+        "years": 7,
+        "rating": 4.8,
+        "reviews": 387,
+        "bio": "南台灣陽光感配色，足部凝膠與手部同步規劃。擅長夏季涼鞋款與旅行前保養。",
+        "styles": ["日系", "夏季", "足部"],
+        "avatar": "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop",
+        "cover": "https://images.unsplash.com/photo-1607779097043-428a9d678186?w=900&h=700&fit=crop",
+        "off_days": [1],
+        "slots": ["11:00", "13:30", "16:00", "18:30"],
+        "services": [
+            ("手部單色", 90, 999),
+            ("足部凝膠", 100, 1299),
+            ("手足同做優惠", 180, 2099),
+        ],
+        "works": [
+            "https://images.unsplash.com/photo-1607779097043-428a9d678186?w=800",
+            "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800",
+            "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=800",
+            "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=800",
+        ],
+    },
+    {
+        "email": "cheng@nailpick.tw",
+        "password": "1234",
+        "name": "許澄澄",
+        "studio": "澄澄私甲",
+        "city": "台南市",
+        "district": "中西區",
+        "years": 3,
+        "rating": 4.6,
+        "reviews": 88,
+        "bio": "小空間私宅工作室，價格友善、溝通細緻。適合第一次做光療、想嘗試低預算設計的客人。",
+        "styles": ["簡約", "法式", "學生"],
+        "avatar": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop",
+        "cover": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=900&h=700&fit=crop",
+        "off_days": [0, 1],
+        "slots": ["12:00", "14:00", "16:00", "18:00"],
+        "services": [
+            ("基礎保養 + 單色", 80, 850),
+            ("簡約法式", 100, 1050),
+            ("卸甲保養", 50, 450),
+        ],
+        "works": [
+            "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800",
+            "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=800",
+            "https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=800",
+            "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=800",
+        ],
+    },
+]
+
+
+def seed_if_empty(db):
+    if db.query(Artist).count() > 0:
+        return
+    import json
+
+    for item in SEED:
+        artist = Artist(
+            email=item["email"],
+            password_hash=hash_password(item["password"]),
+            name=item["name"],
+            studio=item["studio"],
+            city=item["city"],
+            district=item["district"],
+            years=item["years"],
+            rating=item["rating"],
+            reviews=item["reviews"],
+            bio=item["bio"],
+            styles=json.dumps(item["styles"], ensure_ascii=False),
+            avatar=item["avatar"],
+            cover=item["cover"],
+            off_days=json.dumps(item["off_days"]),
+            slots=json.dumps(item["slots"]),
+        )
+        db.add(artist)
+        db.flush()
+        for name, mins, price in item["services"]:
+            db.add(Service(artist_id=artist.id, name=name, mins=mins, price=price))
+        for url in item["works"]:
+            db.add(Work(artist_id=artist.id, url=url))
+    db.commit()
